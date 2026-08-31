@@ -29,4 +29,9 @@ class Food(models.Model):
 
 
 class Order(models.Model):
+    Status_Choice = [("p", "pending"), ("ip", "In Progress"), ("C", "Completed")]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    total_price = models.FloatField()
+    Status = models.CharField(max_length=2, choices=Status_Choice, default="p")
+    payment_status = models.BooleanField(default=False)

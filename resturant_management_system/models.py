@@ -35,3 +35,8 @@ class Order(models.Model):
     total_price = models.FloatField()
     Status = models.CharField(max_length=2, choices=Status_Choice, default="p")
     payment_status = models.BooleanField(default=False)
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    food = models.ForeignKey(Food, on_delete=models.PROTECT)

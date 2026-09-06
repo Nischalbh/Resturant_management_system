@@ -1,4 +1,4 @@
 from django.urls import path
-from .views import category
+from .views import category, Table
 
-urlpatterns = [path("category/", category)]
+urlpatterns = [path("category/", category), path("table/", Table)]

@@ -11,6 +11,7 @@ class categorySerializers(serializers.Serializer):
 
     def update(self, instance, validdated_data):
         instance.name = validdated_data.get("name", instance.name)
+        instance.save()
         return instance
 
 

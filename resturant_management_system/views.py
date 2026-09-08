@@ -20,7 +20,7 @@ def category(request):
         return Response(serializer.data)
 
 
-@api_view(["GET", "PUT", "DELETE"])
+@api_view(["GET", "PUT", "DELETE", "PATCH"])
 def categorydetail(request, pk):
     category = Category.objects.get(pk=pk)
     if request.method == "GET":
@@ -37,10 +37,42 @@ def categorydetail(request, pk):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+    elif request.method == "PATCH":
+        serializer = categorySerializers(category, data=request.data, partial=True)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 
-@api_view()
+@api_view(["GET", "POST"])
 def Table(request):
-    table = TableModel.objects.all()
-    serializer = TableSerializers(table, many=True)
-    return Response(serializer.data)
+    if request.method == "GET":
+        table = TableModel.objects.all()
+        serializer = TableSerializers(table, many=True)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        serializer = TableSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+
+@api_view(["GET", "PUT", "PATCH", "DELETE"])
+def Table_detail(request, pk):
+    table = TableModel.objects.get(pk=pk)
+    if request.method == "GET":
+        serializer = TableSerializers(table)
+        return Response(serializer)
+    elif request.method == "DELETE":
+        table.delete()
+        return Response({"message": "DATA Deleted"})
+    elif request.method == "PUT":
+        serializer = TableSerializers(table, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    elif request.method == "PATCH":
+        serializer = TableSerializers(table, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data)
